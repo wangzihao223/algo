@@ -61,19 +61,6 @@ fn remove_x(nums, x) {
 }
 
 // 快速排序
-
-///qsort(List) ->
-///    qsort(List, []).
-///
-///qsort([], Acc) ->
-///    Acc;
-///qsort([Pivot | Rest], Acc) ->
-///    Smaller = [X || X <- Rest, X =< Pivot],
-///    Larger  = [X || X <- Rest, X > Pivot],
-///    qsort(Smaller, [Pivot | qsort(Larger, Acc)]).
-///pub fn quick_sort(nums: List(Int)) {
-///  q_sort(nums, [])
-///}
 pub fn quick_sort(nums: List(Int)) {
   q_sort(nums, [])
 }
@@ -139,9 +126,4 @@ fn merge(l1, l2) {
       }
     }
   }
-}
-
-type Node {
-  Node(value: Int, left: Node, right: Node)
-  Null
 }
