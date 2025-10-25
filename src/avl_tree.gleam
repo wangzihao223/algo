@@ -1,4 +1,5 @@
 import gleam/int
+import gleam/order
 
 pub type TreeNode(k, item) {
   TreeNode(
@@ -12,11 +13,15 @@ pub type TreeNode(k, item) {
 }
 
 pub type AVLTree(k, item) {
-  AVLTree(root: TreeNode(k, item))
+  AVLTree(root: TreeNode(k, item), val_compare: fn(k, k) -> order.Order)
 }
 
-pub fn new() {
-  AVLTree(Null)
+pub fn new(val_compare) {
+  AVLTree(Null, val_compare: val_compare)
+}
+
+pub fn create_node(val, item) {
+  TreeNode(val, [item], 0, Null, Null)
 }
 
 fn hight(node: TreeNode(k, item)) -> Int {
@@ -106,10 +111,41 @@ fn rotate(node: TreeNode(k, item)) -> TreeNode(k, item) {
   }
 }
 
-pub fn insert(tree: AVLTree(k, item)) {
-  todo
+pub fn insert(tree: AVLTree(k, item), val, item) {
+  tree.root |> insert_1(val, item, tree.val_compare)
 }
 
-fn insert_1(node: TreeNode(k, item), val: k, item: item) {
-  todo
+fn insert_1(node: TreeNode(k, item), val: k, item: item, val_compare) {
+  case node {
+    Null -> create_node(val, item)
+    TreeNode(val: val1, ..) -> {
+      case val_compare(val1, val) {
+        order.Lt ->
+          TreeNode(
+            ..node,
+            left: insert_1(node.left, val, item, val_compare)
+              |> update_height
+              |> rotate,
+          )
+        order.Eq -> {
+          TreeNode(..node, items: item_add(node.items, item))
+        }
+        order.Gt -> {
+          TreeNode(
+            ..node,
+            right: insert_1(node.right, val, item, val_compare)
+              |> update_height
+              |> rotate,
+          )
+        }
+      }
+    }
+  }
+}
+
+fn item_add(items, item) {
+  case items {
+    [] -> [item]
+    [a, ..next] -> [a, ..item_add(next, item)]
+  }
 }
