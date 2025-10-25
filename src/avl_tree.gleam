@@ -12,6 +12,10 @@ pub type TreeNode(k, item) {
   Null
 }
 
+pub type NodeItem(k, item) {
+  NodeItem(val: k, item: item)
+}
+
 pub type AVLTree(k, item) {
   AVLTree(root: TreeNode(k, item), val_compare: fn(k, k) -> order.Order)
 }
@@ -22,6 +26,14 @@ pub fn new(val_compare) {
 
 pub fn create_node(val, item) {
   TreeNode(val, [item], 0, Null, Null)
+}
+
+pub fn insert(tree: AVLTree(k, item), val, item) {
+  tree.root |> insert_1(val, item, tree.val_compare)
+}
+
+pub fn del(tree: AVLTree(k, item), val, item) {
+  todo
 }
 
 fn hight(node: TreeNode(k, item)) -> Int {
@@ -111,10 +123,6 @@ fn rotate(node: TreeNode(k, item)) -> TreeNode(k, item) {
   }
 }
 
-pub fn insert(tree: AVLTree(k, item), val, item) {
-  tree.root |> insert_1(val, item, tree.val_compare)
-}
-
 fn insert_1(node: TreeNode(k, item), val: k, item: item, val_compare) {
   case node {
     Null -> create_node(val, item)
@@ -147,5 +155,18 @@ fn item_add(items, item) {
   case items {
     [] -> [item]
     [a, ..next] -> [a, ..item_add(next, item)]
+  }
+}
+
+fn del_1(node, val, item, val_compare) {
+  case node {
+    Null -> Null
+    TreeNode(val: val1, ..) -> {
+      case val_compare(val, val1) {
+        _ -> {
+          todo
+        }
+      }
+    }
   }
 }
