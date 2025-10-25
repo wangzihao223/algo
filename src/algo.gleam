@@ -1,4 +1,3 @@
-import gleam/io
 import sort
 
 pub fn main() {

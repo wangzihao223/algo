@@ -1,6 +1,4 @@
-import gleam/int
 import gleam/list
-import gleam/result
 
 // 简单排序
 pub fn select_sort(nums: List(Int)) -> List(Int) {
