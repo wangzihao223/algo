@@ -2,6 +2,8 @@ import gleam/int
 import gleam/list
 import gleam/result
 
+import heap
+
 // 简单排序
 pub fn select_sort(nums: List(Int)) -> List(Int) {
   select_loop(nums, []) |> list.reverse
@@ -124,6 +126,24 @@ fn merge(l1, l2) {
         True -> [a1, ..merge(next_l1, l2)]
         False -> [b1, ..merge(l1, next_l2)]
       }
+    }
+  }
+}
+
+// 堆排序
+pub fn heap_sort(nums) {
+  // 新建堆
+  let hp =
+    heap.from_list(nums, heap.max_heap_shift_up, heap.max_heap_shift_down)
+  loop_pop(hp)
+}
+
+fn loop_pop(hp) {
+  case heap.binary_heap_pop(hp) {
+    heap.Empty -> []
+    heap.PopResult(data, hp2) -> {
+      echo data
+      [data, ..loop_pop(hp2)]
     }
   }
 }

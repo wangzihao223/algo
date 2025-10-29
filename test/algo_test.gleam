@@ -2,6 +2,8 @@ import gleam/list
 import gleeunit
 import heap
 import myqueue
+import priority_queue
+import sort
 
 pub fn main() -> Nil {
   gleeunit.main()
@@ -40,6 +42,30 @@ pub fn heap_test() {
   //     heap.binary_heap_push(hp, x)
   //   })
   loop_pop(hp)
+}
+
+pub fn heap_sort_test() {
+  echo sort.heap_sort([5, 6, 2, 12, 3, 8, 7, 122, 0, 9, 4, 1])
+}
+
+pub fn priority_queue_test() {
+  [#(4, "工作"), #(5, "睡觉"), #(3, "玩手机"), #(6, "吃饭")]
+  |> list.fold([], fn(acc, x) {
+    let #(k, v) = x
+    [priority_queue.QueueElement(k, v), ..acc]
+  })
+  |> priority_queue.new
+  |> pq_loop_pop
+}
+
+fn pq_loop_pop(pq) {
+  case priority_queue.pop(pq) {
+    priority_queue.Empty -> Nil
+    priority_queue.PopResult(data, pq1) -> {
+      echo data
+      pq_loop_pop(pq1)
+    }
+  }
 }
 
 fn loop_pop(hp) {
